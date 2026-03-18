@@ -61,7 +61,10 @@ public class TelemetryRecorder : MonoBehaviour
         string json = JsonUtility.ToJson(new Wrapper<FrameData>(frames), true);
         try
         {
-            File.WriteAllText(Application.persistentDataPath + "/" + sessionId + "_telemetry.json", json);
+            string sessionDirectory = Path.Combine(Application.persistentDataPath, sessionId);
+            Directory.CreateDirectory(sessionDirectory);
+            string telemetryPath = Path.Combine(sessionDirectory, "telemetry.json");
+            File.WriteAllText(telemetryPath, json);
         }
         catch (System.Exception e)
         {
