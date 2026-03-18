@@ -1,10 +1,43 @@
+import argparse
+import glob
+import os
+import sys
+
 import torch
 from torch.utils.data import DataLoader
 from dataset import VRDataset
 from model import VRTransformer
 
-# TODO: Replace with glob.glob("../dataset/sessions/*/") for multiple sessions
-dataset = VRDataset(["../dataset/sessions/session_001"])
+parser = argparse.ArgumentParser(description="Train VRTransformer on VRDataset sessions.")
+parser.add_argument(
+    "--sessions-root",
+    default="../dataset/sessions",
+    help="Root directory containing session subdirectories (default: %(default)s).",
+)
+parser.add_argument(
+    "--session",
+    dest="sessions",
+    action="append",
+    help=(
+        "Path to a session directory. Can be specified multiple times. "
+        "If omitted, all subdirectories under --sessions-root are used."
+    ),
+)
+args = parser.parse_args()
+
+if args.sessions:
+    session_paths = []
+    for session_dir in args.sessions:
+        if not os.path.isdir(session_dir):
+            parser.error(f"Session path does not exist or is not a directory: {session_dir}")
+        session_paths.append(session_dir)
+else:
+    pattern = os.path.join(args.sessions_root, "*/")
+    session_paths = sorted(glob.glob(pattern))
+    if not session_paths:
+        parser.error(f"No session directories found matching pattern: {pattern}")
+
+dataset = VRDataset(session_paths)
 loader = DataLoader(dataset, batch_size=1)
 
 model = VRTransformer()
