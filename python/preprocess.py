@@ -11,16 +11,16 @@ def load_session(path):
     return telemetry, events
 
 def to_array(telemetry):
-    data = []
-    for f in telemetry:
-        pos = f["position"]
-        rot = f["rotation"]
-
-        # Handle both dict (Unity JSON) and list formats
-        if isinstance(pos, dict):
-            pos_values = [pos["x"], pos["y"], pos["z"]]
-        else:
-            pos_values = list(pos)
+    return np.array([
+        [
+            f["time"],
+            f["position"]["x"], f["position"]["y"], f["position"]["z"],
+            f["rotation"]["x"], f["rotation"]["y"], f["rotation"]["z"],
+            f["speed"],
+            f["collisions"]
+        ]
+        for f in telemetry
+    ], dtype=np.float32)
 
         if isinstance(rot, dict):
             rot_values = [rot["x"], rot["y"], rot["z"]]
