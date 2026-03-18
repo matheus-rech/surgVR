@@ -23,5 +23,5 @@ class VRDataset(Dataset):
 
         # Penalize: longer time, more collisions
         # Reward: shorter completion time
-        score = 100 - (0.5 * time + 10 * collisions)
+        score = BASE_SCORE - (TIME_WEIGHT * time + COLLISION_WEIGHT * collisions + EFFICIENCY_WEIGHT * (1 - efficiency))
         return torch.tensor(max(0.0, score), dtype=torch.float32)
