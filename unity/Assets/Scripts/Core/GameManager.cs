@@ -33,6 +33,12 @@ public class GameManager : MonoBehaviour
 
         string sessionId = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
 
+        if (telemetry == null || eventLogger == null)
+        {
+            Debug.LogError("GameManager.EndTask: telemetry and/or eventLogger are not assigned. Please assign them in the inspector.");
+            return;
+        }
+
         telemetry.Save(sessionId);
         eventLogger.Save(sessionId);
     }
