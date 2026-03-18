@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
 
     public void StartTask()
     {
+        if (telemetry != null) telemetry.Clear();
+        if (eventLogger != null) eventLogger.Clear();
         startTime = Time.time;
         taskRunning = true;
     }

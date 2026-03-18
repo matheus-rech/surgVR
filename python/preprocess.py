@@ -1,4 +1,5 @@
 import json
+import os
 import numpy as np
 
 def load_session(path):
@@ -21,17 +22,3 @@ def to_array(telemetry):
         ]
         for f in telemetry
     ], dtype=np.float32)
-
-        if isinstance(rot, dict):
-            rot_values = [rot["x"], rot["y"], rot["z"]]
-        else:
-            rot_values = list(rot)
-
-        data.append([
-            f["time"],
-            *pos_values,
-            *rot_values,
-            f["speed"],
-            f["collisions"]
-        ])
-    return np.array(data)

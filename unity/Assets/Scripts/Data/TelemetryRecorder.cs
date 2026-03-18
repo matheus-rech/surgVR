@@ -25,11 +25,13 @@ public class TelemetryRecorder : MonoBehaviour
         if (target == null)
         {
             Debug.LogError("TelemetryRecorder: target Transform is not assigned!");
+            enabled = false;
             return;
         }
         if (collisions == null)
         {
             Debug.LogError("TelemetryRecorder: CollisionTracker is not assigned!");
+            enabled = false;
             return;
         }
         lastPos = target.position;
@@ -56,6 +58,15 @@ public class TelemetryRecorder : MonoBehaviour
         lastPos = pos;
     }
 
+    public void Clear()
+    {
+        frames.Clear();
+        if (target != null)
+            lastPos = target.position;
+        if (collisions != null)
+            collisions.Clear();
+    }
+
     public void Save(string sessionId)
     {
         string json = JsonUtility.ToJson(new Wrapper<FrameData>(frames), true);
@@ -73,9 +84,3 @@ public class TelemetryRecorder : MonoBehaviour
     }
 }
 
-[System.Serializable]
-public class Wrapper<T>
-{
-    public List<T> items;
-    public Wrapper(List<T> items) { this.items = items; }
-}

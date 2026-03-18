@@ -3,7 +3,7 @@ using UnityEngine;
 using System.IO;
 
 [System.Serializable]
-public class Event
+public class TaskEvent
 {
     public string name;
     public float time;
@@ -11,18 +11,7 @@ public class Event
 
 public class EventLogger : MonoBehaviour
 {
-    [System.Serializable]
-    private class EventListWrapper
-    {
-        public List<Event> events;
-
-        public EventListWrapper(List<Event> events)
-        {
-            this.events = events;
-        }
-    }
-
-    private List<Event> events = new List<Event>();
+    private List<TaskEvent> events = new List<TaskEvent>();
 
     public void Log(string eventName)
     {
@@ -31,16 +20,21 @@ public class EventLogger : MonoBehaviour
             Debug.LogError("EventLogger: GameManager.Instance is null. Cannot log event.");
             return;
         }
-        events.Add(new Event
+        events.Add(new TaskEvent
         {
             name = eventName,
             time = GameManager.Instance.GetElapsedTime()
         });
     }
 
+    public void Clear()
+    {
+        events.Clear();
+    }
+
     public void Save(string sessionId)
     {
-        string json = JsonUtility.ToJson(new EventListWrapper(events), true);
+        string json = JsonUtility.ToJson(new Wrapper<TaskEvent>(events), true);
         try
         {
             string sessionDirectory = Path.Combine(Application.persistentDataPath, sessionId);
