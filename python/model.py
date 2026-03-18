@@ -2,14 +2,17 @@ import torch
 import torch.nn as nn
 
 class VRTransformer(nn.Module):
-    def __init__(self, input_dim=9, hidden=128):
+    def __init__(self, input_dim=9, hidden=128, nhead=4, num_layers=3):
         super().__init__()
 
         self.input_proj = nn.Linear(input_dim, hidden)
 
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=hidden, nhead=nhead, batch_first=True
+        )
         self.encoder = nn.TransformerEncoder(
-            nn.TransformerEncoderLayer(d_model=hidden, nhead=4),
-            num_layers=3
+            encoder_layer,
+            num_layers=num_layers
         )
 
         self.head = nn.Linear(hidden, 1)
