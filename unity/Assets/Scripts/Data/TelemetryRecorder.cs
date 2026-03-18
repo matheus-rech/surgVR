@@ -20,22 +20,32 @@ public class TelemetryRecorder : MonoBehaviour
     private List<FrameData> frames = new List<FrameData>();
     private Vector3 lastPos;
 
-    void Start()
+    void Awake()
     {
         if (target == null)
         {
-            Debug.LogError("TelemetryRecorder: target Transform is not assigned!");
+            Debug.LogError("TelemetryRecorder: target Transform is not assigned!", this);
             enabled = false;
             return;
         }
         if (collisions == null)
         {
-            Debug.LogError("TelemetryRecorder: CollisionTracker is not assigned!");
+            Debug.LogError("TelemetryRecorder: CollisionTracker is not assigned!", this);
             enabled = false;
             return;
         }
         lastPos = target.position;
     }
+
+#if UNITY_EDITOR
+    void OnValidate()
+    {
+        if (target == null)
+            Debug.LogWarning("TelemetryRecorder: target Transform is not assigned!", this);
+        if (collisions == null)
+            Debug.LogWarning("TelemetryRecorder: CollisionTracker is not assigned!", this);
+    }
+#endif
 
     void Update()
     {
