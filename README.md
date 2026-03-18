@@ -8,10 +8,10 @@ Multimodal VR + Video dataset generator for surgical skill modeling.
 - Python dataset + ML pipeline
 
 ## Output
-dataset/sessions/session_x/
-  - video.mp4
-  - telemetry.json
-  - events.json
+`Application.persistentDataPath` (on-device session output)
+  - `video.mp4`
+  - `${sessionId}_telemetry.json`
+  - `${sessionId}_events.json`
 
 ## Run
 Unity → build to Quest  
