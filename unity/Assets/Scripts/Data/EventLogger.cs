@@ -43,7 +43,11 @@ public class EventLogger : MonoBehaviour
         string json = JsonUtility.ToJson(new EventListWrapper(events), true);
         try
         {
-            File.WriteAllText(Application.persistentDataPath + "/" + sessionId + "_events.json", json);
+            string sessionDirectory = Path.Combine(Application.persistentDataPath, sessionId);
+            Directory.CreateDirectory(sessionDirectory);
+
+            string filePath = Path.Combine(sessionDirectory, "events.json");
+            File.WriteAllText(filePath, json);
         }
         catch (System.Exception e)
         {
