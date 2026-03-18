@@ -11,6 +11,17 @@ public class Event
 
 public class EventLogger : MonoBehaviour
 {
+    [System.Serializable]
+    private class EventListWrapper
+    {
+        public List<Event> events;
+
+        public EventListWrapper(List<Event> events)
+        {
+            this.events = events;
+        }
+    }
+
     private List<Event> events = new List<Event>();
 
     public void Log(string eventName)
@@ -29,7 +40,7 @@ public class EventLogger : MonoBehaviour
 
     public void Save(string sessionId)
     {
-        string json = JsonUtility.ToJson(new Wrapper<Event>(events), true);
+        string json = JsonUtility.ToJson(new EventListWrapper(events), true);
         try
         {
             File.WriteAllText(Application.persistentDataPath + "/" + sessionId + "_events.json", json);
