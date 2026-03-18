@@ -4,7 +4,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public float startTime;
+    private float startTime;
     public bool taskRunning;
 
     public TelemetryRecorder telemetry;
@@ -39,6 +39,10 @@ public class GameManager : MonoBehaviour
 
     public float GetElapsedTime()
     {
+        if (!taskRunning && startTime == 0f)
+        {
+            return 0f;
+        }
         return Time.time - startTime;
     }
 }

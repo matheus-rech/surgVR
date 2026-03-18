@@ -13,10 +13,24 @@ def load_session(path):
 def to_array(telemetry):
     data = []
     for f in telemetry:
+        pos = f["position"]
+        rot = f["rotation"]
+
+        # Handle both dict (Unity JSON) and list formats
+        if isinstance(pos, dict):
+            pos_values = [pos["x"], pos["y"], pos["z"]]
+        else:
+            pos_values = list(pos)
+
+        if isinstance(rot, dict):
+            rot_values = [rot["x"], rot["y"], rot["z"]]
+        else:
+            rot_values = list(rot)
+
         data.append([
             f["time"],
-            *f["position"],
-            *f["rotation"],
+            *pos_values,
+            *rot_values,
             f["speed"],
             f["collisions"]
         ])

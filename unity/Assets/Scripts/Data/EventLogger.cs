@@ -15,6 +15,11 @@ public class EventLogger : MonoBehaviour
 
     public void Log(string eventName)
     {
+        if (GameManager.Instance == null)
+        {
+            Debug.LogError("EventLogger: GameManager.Instance is null. Cannot log event.");
+            return;
+        }
         events.Add(new Event
         {
             name = eventName,

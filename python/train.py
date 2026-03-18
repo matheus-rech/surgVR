@@ -3,6 +3,7 @@ from torch.utils.data import DataLoader
 from dataset import VRDataset
 from model import VRTransformer
 
+# TODO: Replace with glob.glob("../dataset/sessions/*/") for multiple sessions
 dataset = VRDataset(["../dataset/sessions/session_001"])
 loader = DataLoader(dataset, batch_size=1)
 

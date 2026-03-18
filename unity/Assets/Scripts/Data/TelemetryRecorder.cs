@@ -22,12 +22,22 @@ public class TelemetryRecorder : MonoBehaviour
 
     void Start()
     {
+        if (target == null)
+        {
+            Debug.LogError("TelemetryRecorder: target Transform is not assigned!");
+            return;
+        }
+        if (collisions == null)
+        {
+            Debug.LogError("TelemetryRecorder: CollisionTracker is not assigned!");
+            return;
+        }
         lastPos = target.position;
     }
 
     void Update()
     {
-        if (!GameManager.Instance.taskRunning) return;
+        if (GameManager.Instance == null || !GameManager.Instance.taskRunning || target == null || collisions == null) return;
 
         float dt = Time.deltaTime;
         Vector3 pos = target.position;

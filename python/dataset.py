@@ -18,10 +18,10 @@ class VRDataset(Dataset):
         return torch.tensor(x, dtype=torch.float32), score
 
     def compute_label(self, x):
-        time = x[-1,0]
-        collisions = x[-1,-1]
-        max_time = x[:,0].max()
-        efficiency = x.shape[0] / max_time if max_time > 0 else 1.0
+        time = x[-1, 0]
+        collisions = x[-1, -1]
 
-        score = 100 - (0.5*time + 10*collisions + 50*(1-efficiency))
-        return torch.tensor(score, dtype=torch.float32)
+        # Penalize: longer time, more collisions
+        # Reward: shorter completion time
+        score = 100 - (0.5 * time + 10 * collisions)
+        return torch.tensor(max(0.0, score), dtype=torch.float32)

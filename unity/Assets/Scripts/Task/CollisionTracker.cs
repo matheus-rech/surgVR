@@ -6,7 +6,7 @@ public class CollisionTracker : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (GameManager.Instance.taskRunning)
+        if (GameManager.Instance != null && GameManager.Instance.taskRunning)
         {
             collisionCount++;
         }
