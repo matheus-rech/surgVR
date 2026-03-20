@@ -1,0 +1,49 @@
+{
+  "items": [
+    {
+      "time": 0.0,
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "speed": 0.0,
+      "collisions": 0
+    },
+    {
+      "time": 1.2,
+      "position": {
+        "x": 0.1,
+        "y": 0.0,
+        "z": 0.1
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 15.0,
+        "z": 0.0
+      },
+      "speed": 0.12,
+      "collisions": 0
+    },
+    {
+      "time": 2.4,
+      "position": {
+        "x": 0.2,
+        "y": 0.0,
+        "z": 0.2
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 30.0,
+        "z": 0.0
+      },
+      "speed": 0.12,
+      "collisions": 1
+    }
+  ]
+}
