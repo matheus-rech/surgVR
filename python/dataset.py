@@ -6,8 +6,10 @@ try:
 except ModuleNotFoundError:  # pragma: no cover - exercised through train.py fallback
     torch = None
 
-    class Dataset:  # type: ignore[override]
+    class DatasetBase:
         pass
+else:
+    DatasetBase = Dataset
 
 from preprocess import load_session, to_array
 
@@ -15,13 +17,17 @@ BASE_SCORE = 100.0
 TIME_WEIGHT = 1.5
 COLLISION_WEIGHT = 10.0
 EFFICIENCY_WEIGHT = 25.0
+TIME_INDEX = 0
+POSITION_START_INDEX = 1
+POSITION_END_INDEX = 4
+COLLISIONS_INDEX = -1
 
 
 def compute_efficiency(x):
     if len(x) < 2:
         return 1.0
 
-    positions = [row[1:4] for row in x]
+    positions = [row[POSITION_START_INDEX:POSITION_END_INDEX] for row in x]
 
     path_length = 0.0
     for current, previous in zip(positions[1:], positions[:-1]):
@@ -39,8 +45,8 @@ def compute_label(x):
     if len(x) == 0:
         raise ValueError("Telemetry must contain at least one frame.")
 
-    elapsed_time = float(x[-1][0])
-    collisions = float(x[-1][-1])
+    elapsed_time = float(x[-1][TIME_INDEX])
+    collisions = float(x[-1][COLLISIONS_INDEX])
     efficiency = compute_efficiency(x)
 
     score = BASE_SCORE - (
@@ -51,7 +57,7 @@ def compute_label(x):
     return max(0.0, score)
 
 
-class VRDataset(Dataset):
+class VRDataset(DatasetBase):
     def __init__(self, session_paths):
         self.sessions = session_paths
 

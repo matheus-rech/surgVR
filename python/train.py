@@ -7,6 +7,11 @@ from preprocess import load_session, to_array
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_SESSIONS_ROOT = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "dataset", "sessions"))
+TIME_INDEX = 0
+POSITION_START_INDEX = 1
+POSITION_END_INDEX = 4
+SPEED_INDEX = 7
+COLLISIONS_INDEX = 8
 
 
 def build_parser():
@@ -90,7 +95,7 @@ def build_demo_features(session_path):
     if len(x) == 0:
         raise ValueError(f"Session {session_path} has no telemetry frames.")
 
-    positions = [row[1:4] for row in x]
+    positions = [row[POSITION_START_INDEX:POSITION_END_INDEX] for row in x]
     if len(positions) < 2:
         total_distance = 0.0
     else:
@@ -98,13 +103,13 @@ def build_demo_features(session_path):
         for current, previous in zip(positions[1:], positions[:-1]):
             total_distance += sum((float(a) - float(b)) ** 2 for a, b in zip(current, previous)) ** 0.5
 
-    speeds = [float(row[7]) for row in x]
+    speeds = [float(row[SPEED_INDEX]) for row in x]
     features = [
-        float(x[-1][0]),
+        float(x[-1][TIME_INDEX]),
         total_distance,
         sum(speeds) / len(speeds),
         max(speeds),
-        float(x[-1][8]),
+        float(x[-1][COLLISIONS_INDEX]),
         float(len(events)),
     ]
     return features, float(compute_label(x))
