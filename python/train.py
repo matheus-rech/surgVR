@@ -136,8 +136,11 @@ def main():
 
     try:
         train_with_torch(session_paths, args.epochs)
-    except ModuleNotFoundError:
-        train_with_fallback(session_paths, args.epochs)
+    except ModuleNotFoundError as e:
+        if getattr(e, "name", None) == "torch":
+            train_with_fallback(session_paths, args.epochs)
+        else:
+            raise
 
     return 0
 
