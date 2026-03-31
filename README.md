@@ -9,13 +9,14 @@ Multimodal VR + Video dataset generator for surgical skill modeling.
 
 ## Output
 `Application.persistentDataPath` (on-device session output)
-  - `video.mp4`
-  - `${sessionId}_telemetry.json`
-  - `${sessionId}_events.json`
+  - `${sessionId}/telemetry.json`
+  - `${sessionId}/events.json`
 
 ## Run
 Unity → build to Quest  
-Python → train model
+Python → `python python/train.py`
+
+The repository includes `dataset/sessions/demo_session/` so the Python pipeline can be exercised end to end from a fresh clone. If PyTorch is unavailable, `python/train.py` automatically runs a lightweight standard-library fallback so the demo still works.
 
 ## Goal
 Multimodal surgical skill prediction

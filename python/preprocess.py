@@ -1,6 +1,5 @@
 import json
 import os
-import numpy as np
 
 def load_session(path):
     with open(os.path.join(path, "telemetry.json")) as f:
@@ -12,7 +11,7 @@ def load_session(path):
     return telemetry, events
 
 def to_array(telemetry):
-    return np.array([
+    return [
         [
             f["time"],
             f["position"]["x"], f["position"]["y"], f["position"]["z"],
@@ -21,4 +20,4 @@ def to_array(telemetry):
             f["collisions"]
         ]
         for f in telemetry
-    ], dtype=np.float32)
+    ]
